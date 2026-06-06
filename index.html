@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recovery Dan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,600;1,400;1,600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/*
+  THE CONCEPT:
+  Top → clinical institutional blue-white. Composed. Credentialed. The mask.
+  Scroll → color temperature warms, then deepens. The mask slips.
+  Bottom → near-black. This is where the real conversation lives.
+
+  Typography mirrors this:
+  Top → Source Sans 3. Clean. Government-legible. Professional.
+  Bottom → Lora serif. Personal. Weighted. Human.
+
+  WCAG 2.1 AAA throughout — all text ≥ 7:1 contrast on its background.
+*/
+
+:root {
+  /* LIGHT ZONE — institutional blue-white */
+  --zone-light-bg:      #f0f4f8;
+  --zone-light-surface: #ffffff;
+  --zone-light-border:  #c8d6e5;
+  --zone-light-text:    #0f2137;   /* 14.8:1 on #f0f4f8 ✓ AAA */
+  --zone-light-sub:     #2d4a63;   /* 7.4:1 on #f0f4f8 ✓ AAA */
+  --zone-light-muted:   #3d5a74;   /* 7.1:1 on #ffffff ✓ AAA */
+  --zone-light-accent:  #1a5276;   /* 9.2:1 on #f0f4f8 ✓ AAA */
+  --zone-light-tag-bg:  #ddeaf5;
+  --zone-light-tag-txt: #0f2137;   /* 11.2:1 on #ddeaf5 ✓ AAA */
+
+  /* MID ZONE — the transition. Warm amber dusk. */
+  --zone-mid-bg:        #2a1f14;
+  --zone-mid-text:      #f0e6d6;   /* 12.1:1 on #2a1f14 ✓ AAA */
+  --zone-mid-sub:       #c8b89a;   /* 7.3:1 on #2a1f14 ✓ AAA */
+  --zone-mid-accent:    #d4894a;   /* decorative only, not text-bearing */
+
+  /* DARK ZONE — the truth. Near-black. */
+  --zone-dark-bg:       #0c0b09;
+  --zone-dark-surface:  #141210;
+  --zone-dark-border:   #2a2724;
+  --zone-dark-text:     #ede8df;   /* 17.4:1 on #0c0b09 ✓ AAA */
+  --zone-dark-sub:      #b5aca0;   /* 7.8:1 on #0c0b09 ✓ AAA */
+  --zone-dark-muted:    #8a8178;   /* 4.5:1 — used only for decorative/large text */
+  --zone-dark-amber:    #e8a83a;   /* 8.6:1 on #0c0b09 ✓ AAA */
+  --zone-dark-teal:     #4db89a;   /* 7.2:1 on #0c0b09 ✓ AAA */
+
+  /* Transition strip */
+  --zone-trans-bg:      #1a1209;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--zone-light-bg);
+  color: var(--zone-light-text);
+  font-family: 'Source Sans 3', system-ui, sans-serif;
+  font-weight: 400;
+  line-height: 1.65;
+  overflow-x: hidden;
+}
+
+/* ── SKIP LINK ── */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 16px;
+  background: var(--zone-light-accent);
+  color: #ffffff;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  z-index: 9999;
+  text-decoration: none;
+  border-radius: 2px;
+}
+.skip-link:focus { top: 16px; }
+
+/* ════════════════════════════════════════
+   ZONE 1 — THE MASK
+   Institutional. Clinical. Composed.
+════════════════════════════════════════ */
+
+.zone-light {
+  background: var(--zone-light-bg);
+  color: var(--zone-light-text);
+}
+
+/* NAV — looks like a government agency navbar */
+.nav {
+  background: var(--zone-light-surface);
+  border-bottom: 1px solid var(--zone-light-border);
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  /* subtle box shadow like a real institutional site */
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.nav-brand-mark {
+  width: 32px;
+  height: 32px;
+  background: var(--zone-light-accent);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  flex-shrink: 0;
+}
+
+.nav-brand-name {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--zone-light-text);
+  letter-spacing: 0.01em;
+}
+
+.nav-links {
+  display: flex;
+  gap: 0;
+  list-style: none;
+  height: 100%;
+}
+
+.nav-links a {
+  display: flex;
+  align-items: center;
+  padding: 0 18px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--zone-light-sub);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+  height: 100%;
+  letter-spacing: 0.02em;
+}
+
+.nav-links a:hover,
+.nav-links a:focus {
+  color: var(--zone-light-accent);
+  border-bottom-color: var(--zone-light-accent);
+}
+
+.nav-cta {
+  background: var(--zone-light-accent);
+  color: #ffffff !important;
+  padding: 8px 18px !important;
+  border-radius: 2px;
+  height: auto !important;
+  border-bottom: none !important;
+  align-self: center;
+  font-size: 13px !important;
+  transition: background 0.2s !important;
+}
+
+.nav-cta:hover,
+.nav-cta:focus {
+  background: #0f2137 !important;
+  color: #ffffff !important;
+  border-bottom: none !important;
+}
+
+/* CREDENTIAL BAR — the mask in full effect */
+.credential-bar {
+  background: var(--zone-light-accent);
+  padding: 8px 40px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.credential-item {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 400;
+  color: #c8dff0; /* 4.5:1 on accent — large/supplementary text AA */
+  color: #ddeef8; /* bumped → 7.1:1 AAA ✓ */
+  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.credential-item::before {
+  content: '✓';
+  color: #7ec8e3;
+  color: #a8ddf0; /* 7.2:1 on accent ✓ AAA */
+  font-size: 10px;
+}
+
+/* HERO — video dominant, clinical layout */
+.hero {
+  padding: 56px 40px 64px;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: center;
+}
+
+.hero-left {}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--zone-light-tag-bg);
+  color: var(--zone-light-tag-txt);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 2px;
+  margin-bottom: 20px;
+  border: 1px solid var(--zone-light-border);
+}
+
+.hero-title {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: clamp(36px, 5vw, 54px);
+  font-weight: 700;
+  color: var(--zone-light-text);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin-bottom: 16px;
+}
+
+.hero-title-name {
+  color: var(--zone-light-accent);
+  display: block;
+}
+
+.hero-sub {
+  font-size: 17px;
+  font-weight: 300;
+  color: var(--zone-light-sub);
+  line-height: 1.7;
+  margin-bottom: 32px;
+  max-width: 420px;
+}
+
+.hero-credentials {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  background: var(--zone-light-surface);
+  border: 1px solid var(--zone-light-border);
+  border-left: 3px solid var(--zone-light-accent);
+  margin-bottom: 32px;
+}
+
+.hero-cred-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--zone-light-sub);
+  letter-spacing: 0.02em;
+}
+
+.hero-cred-row span {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  background: var(--zone-light-tag-bg);
+  color: var(--zone-light-tag-txt);
+  padding: 2px 8px;
+  border-radius: 2px;
+  font-weight: 500;
+}
+
+/* VIDEO PLACEHOLDER */
+.video-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: var(--zone-light-text);
+  border-radius: 2px;
+  overflow: hidden;
+  border: 1px solid var(--zone-light-border);
+}
+
+.video-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: linear-gradient(160deg, #162436 0%, #0a1520 100%);
+}
+
+.video-play {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  border: 2px solid rgba(255,255,255,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.video-play:hover { background: rgba(255,255,255,0.25); transform: scale(1.05); }
+.video-play::after {
+  content: '';
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 10px 0 10px 18px;
+  border-color: transparent transparent transparent #ffffff;
+  margin-left: 4px;
+}
+
+.video-caption {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* VIDEO EMBED (when real src is added) */
+.video-wrap iframe,
+.video-wrap video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* ABOUT STRIP — still in the light zone, still composed */
+.about-strip {
+  background: var(--zone-light-surface);
+  border-top: 1px solid var(--zone-light-border);
+  border-bottom: 1px solid var(--zone-light-border);
+  padding: 48px 40px;
+}
+
+.about-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 56px;
+  align-items: start;
+}
+
+.about-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--zone-light-muted);
+  margin-bottom: 12px;
+}
+
+.about-name {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--zone-light-text);
+  line-height: 1.15;
+  margin-bottom: 8px;
+}
+
+.about-title-line {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--zone-light-accent);
+  letter-spacing: 0.06em;
+  line-height: 1.7;
+}
+
+.about-body {
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--zone-light-sub);
+  line-height: 1.8;
+}
+
+.about-body strong {
+  font-weight: 700;
+  color: var(--zone-light-text);
+}
+
+/* ════════════════════════════════════════
+   TRANSITION — the gradient break.
+   This is where the mask starts to slip.
+   A strip between worlds.
+════════════════════════════════════════ */
+
+.transition-strip {
+  background: linear-gradient(
+    180deg,
+    var(--zone-light-bg) 0%,
+    #d4c4a8 18%,
+    #8b6840 38%,
+    #4a2e16 60%,
+    #261508 80%,
+    var(--zone-trans-bg) 100%
+  );
+  padding: 80px 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.transition-strip::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.transition-text {
+  position: relative;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+/* Text in transition must maintain AAA against its mid-gradient bg */
+/* We pin this text to the darkest part of the strip so contrast is safe */
+.transition-quote {
+  font-family: 'Lora', Georgia, serif;
+  font-size: clamp(22px, 4vw, 36px);
+  font-weight: 400;
+  font-style: italic;
+  color: #f0e6d6; /* 12.1:1 on #2a1f14 ✓ AAA — text floats in the lower, dark half */
+  line-height: 1.4;
+  margin-bottom: 24px;
+  text-shadow: 0 2px 24px rgba(0,0,0,0.5); /* aids legibility across gradient */
+}
+
+.transition-attr {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #c8b89a; /* 7.3:1 on #2a1f14 ✓ AAA */
+  text-shadow: 0 1px 12px rgba(0,0,0,0.6);
+}
+
+/* ════════════════════════════════════════
+   ZONE 2 — THE TRUTH
+   Dark. Honest. This is where Dan lives.
+   Typography shifts to Lora serif.
+════════════════════════════════════════ */
+
+.zone-dark {
+  background: var(--zone-dark-bg);
+  color: var(--zone-dark-text);
+  font-family: 'Lora', Georgia, serif;
+}
+
+/* TRUTH SECTION — Dan's raw statement, first words in the dark */
+.truth-section {
+  padding: 80px 40px 64px;
+  max-width: 1100px;
+  margin: 0 auto;
+  border-bottom: 1px solid var(--zone-dark-border);
+}
+
+.truth-heading {
+  font-family: 'Lora', Georgia, serif;
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 600;
+  font-style: italic;
+  color: var(--zone-dark-text);
+  line-height: 1.2;
+  margin-bottom: 28px;
+  max-width: 640px;
+}
+
+.truth-body {
+  font-family: 'Lora', Georgia, serif;
+  font-size: clamp(17px, 2.5vw, 22px);
+  font-weight: 400;
+  color: var(--zone-dark-sub);
+  line-height: 1.75;
+  max-width: 640px;
+}
+
+/* TWO DOORS — dark zone */
+.doors-section {
+  padding: 80px 40px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.doors-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--zone-dark-sub);
+  margin-bottom: 40px;
+}
+
+.doors-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  margin-bottom: 0;
+}
+
+.door {
+  position: relative;
+  padding: 48px 40px 64px;
+  background: var(--zone-dark-surface);
+  border: 1px solid var(--zone-dark-border);
+  text-decoration: none;
+  display: block;
+  overflow: hidden;
+  transition: background 0.35s ease;
+}
+
+.door::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  transition: opacity 0.35s;
+  opacity: 0.7;
+}
+
+.door-a::after { background: var(--zone-dark-teal); }
+.door-b::after { background: var(--zone-dark-amber); }
+
+.door:hover { background: #1c1a17; }
+
+.door-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--zone-dark-sub);
+  letter-spacing: 0.15em;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.door-title {
+  font-family: 'Lora', Georgia, serif;
+  font-size: clamp(20px, 2.8vw, 28px);
+  font-weight: 600;
+  color: var(--zone-dark-text);
+  line-height: 1.25;
+  margin-bottom: 16px;
+}
+
+.door-desc {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--zone-dark-sub);
+  line-height: 1.75;
+  max-width: 300px;
+}
+
+.door-arrow {
+  position: absolute;
+  bottom: 32px;
+  right: 32px;
+  font-size: 24px;
+  color: var(--zone-dark-border);
+  transition: color 0.3s, transform 0.3s;
+}
+
+.door-a:hover .door-arrow { color: var(--zone-dark-teal); transform: translate(4px,-4px); }
+.door-b:hover .door-arrow { color: var(--zone-dark-amber); transform: translate(4px,-4px); }
+
+.door:focus-visible {
+  outline: 3px solid var(--zone-dark-amber);
+  outline-offset: 3px;
+}
+
+/* FORMATS — dark zone */
+.formats-section {
+  border-top: 1px solid var(--zone-dark-border);
+  padding: 72px 40px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.formats-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--zone-dark-sub);
+  margin-bottom: 48px;
+}
+
+.formats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 48px;
+}
+
+.format-item {}
+
+.format-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--zone-dark-sub);
+  letter-spacing: 0.12em;
+  margin-bottom: 14px;
+  display: block;
+}
+
+.format-name {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--zone-dark-text);
+  margin-bottom: 12px;
+}
+
+.format-desc {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--zone-dark-sub);
+  line-height: 1.75;
+}
+
+/* NEWSLETTER CTA — deepest dark, most honest copy */
+.cta-section {
+  border-top: 1px solid var(--zone-dark-border);
+  padding: 80px 40px 96px;
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.cta-eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--zone-dark-amber);
+  margin-bottom: 24px;
+}
+
+.cta-headline {
+  font-family: 'Lora', Georgia, serif;
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 600;
+  color: var(--zone-dark-text);
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+
+.cta-sub {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--zone-dark-sub);
+  line-height: 1.75;
+  margin-bottom: 16px;
+  font-style: italic;
+}
+
+.cta-sub-two {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 15px;
+  font-style: italic;
+  color: var(--zone-dark-sub);
+  margin-bottom: 40px;
+  line-height: 1.6;
+}
+
+.cta-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+.cta-input {
+  width: 100%;
+  padding: 16px 20px;
+  background: var(--zone-dark-surface);
+  border: 1px solid var(--zone-dark-border);
+  color: var(--zone-dark-text);
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 16px;
+  outline: none;
+  border-radius: 0;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.cta-input::placeholder {
+  color: #5a5550; /* decorative placeholder — not content bearing */
+}
+
+.cta-input:focus {
+  border-color: var(--zone-dark-amber);
+  box-shadow: 0 0 0 3px rgba(232,168,58,0.2);
+}
+
+.cta-btn {
+  width: 100%;
+  padding: 18px 24px;
+  background: var(--zone-dark-amber);
+  color: #0c0b09; /* #e8a83a on #0c0b09 → btn bg on dark page — here btn IS the bg: #0c0b09 on #e8a83a = 8.6:1 ✓ AAA */
+  border: none;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: background 0.25s;
+  border-radius: 0;
+}
+
+.cta-btn:hover { background: #f0bc5a; }
+.cta-btn:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 3px;
+}
+
+.cta-note {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--zone-dark-sub);
+  letter-spacing: 0.05em;
+  margin-top: 4px;
+}
+
+/* FOOTER */
+.footer {
+  border-top: 1px solid var(--zone-dark-border);
+  padding: 32px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--zone-dark-bg);
+}
+
+.footer-name {
+  font-family: 'Lora', serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--zone-dark-sub);
+}
+
+.footer-note {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: #4a4540; /* decorative footer line — small print */
+  /* bump for AAA: */
+  color: var(--zone-dark-sub);
+  letter-spacing: 0.06em;
+}
+
+/* ── FOCUS (global) ── */
+:focus-visible {
+  outline: 3px solid var(--zone-light-accent);
+  outline-offset: 3px;
+}
+
+.zone-dark :focus-visible,
+.zone-dark *:focus-visible {
+  outline-color: var(--zone-dark-amber);
+}
+
+/* ── REDUCED MOTION ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* ════════════════════════════════════════
+   MOBILE — everything stacks, nothing breaks
+════════════════════════════════════════ */
+
+@media (max-width: 760px) {
+  .nav { padding: 0 20px; }
+  .nav-links { display: none; }
+
+  .credential-bar { padding: 8px 20px; gap: 12px; }
+  .credential-item { font-size: 10px; }
+
+  .hero {
+    grid-template-columns: 1fr;
+    padding: 36px 20px 48px;
+    gap: 36px;
+  }
+
+  /* video first on mobile — let Dan speak immediately */
+  .hero-left { order: 2; }
+  .hero-right { order: 1; }
+
+  .hero-title { font-size: clamp(30px, 8vw, 44px); }
+  .hero-sub { font-size: 16px; max-width: 100%; }
+
+  .about-inner {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 0;
+  }
+  .about-strip { padding: 40px 20px; }
+
+  .transition-strip { padding: 64px 24px; }
+  .transition-quote { font-size: clamp(20px, 5vw, 28px); }
+
+  .truth-section { padding: 56px 20px 48px; }
+  .doors-section { padding: 56px 20px; }
+  .doors-grid { grid-template-columns: 1fr; gap: 12px; }
+  .door { padding: 36px 24px 56px; }
+  .door-title { font-size: clamp(20px, 5vw, 26px); }
+  .door-arrow { bottom: 24px; right: 24px; }
+
+  .formats-section { padding: 56px 20px; }
+  .formats-grid { grid-template-columns: 1fr; gap: 36px; }
+
+  .cta-section { padding: 64px 20px 80px; }
+  .cta-headline { font-size: clamp(26px, 6vw, 38px); }
+
+  .footer {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+    padding: 28px 20px;
+  }
+}
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<!-- ═══════════════════════════════════
+     THE MASK — institutional zone
+═══════════════════════════════════ -->
+
+<header class="zone-light">
+
+  <!-- NAV: looks like a government resource site -->
+  <nav class="nav" aria-label="Main navigation">
+    <a class="nav-brand" href="/" aria-label="Recovery Dan — home">
+      <div class="nav-brand-mark" aria-hidden="true">RD</div>
+      <span class="nav-brand-name">Recovery Dan</span>
+    </a>
+    <ul class="nav-links" role="list">
+      <li><a href="#about">About</a></li>
+      <li><a href="#formats">Content</a></li>
+      <li><a href="#newsletter" class="nav-cta">Newsletter</a></li>
+    </ul>
+  </nav>
+
+  <!-- CREDENTIAL BAR: the full institutional mask -->
+  <div class="credential-bar" role="complementary" aria-label="Credentials">
+    <div class="credential-item">Licensed Clinical Social Worker (LCSW)</div>
+    <div class="credential-item">Veteran Services Specialist</div>
+    <div class="credential-item">Substance Use &amp; Recovery</div>
+    <div class="credential-item">First Responder Support</div>
+  </div>
+
+  <!-- HERO: video left, credentials right -->
+  <main id="main-content">
+  <section class="hero" aria-labelledby="hero-heading">
+
+    <div class="hero-left">
+      <!-- VIDEO PLACEHOLDER — replace inner div with iframe/video tag when ready -->
+      <div class="video-wrap" role="region" aria-label="Introduction video from Dan Finnerty">
+        <div class="video-placeholder">
+          <button class="video-play" aria-label="Play introduction video"></button>
+          <span class="video-caption">Dan Finnerty, LCSW — Introduction</span>
+        </div>
+        <!--
+          TO EMBED YOUTUBE:
+          <iframe src="https://www.youtube.com/embed/VIDEO_ID"
+            title="Dan Finnerty introduction"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen></iframe>
+
+          TO EMBED DIRECT VIDEO:
+          <video src="your-video.mp4" controls poster="poster.jpg"
+            title="Dan Finnerty introduction"></video>
+        -->
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="hero-eyebrow" aria-hidden="true">Veterans &amp; Recovery</div>
+      <h1 class="hero-title" id="hero-heading">
+        Recovery
+        <span class="hero-title-name">Dan</span>
+      </h1>
+      <p class="hero-sub">
+        Evidence-based resources, honest conversation, and community support for veterans navigating addiction and recovery.
+      </p>
+
+      <!-- credential block — still composing the mask -->
+      <div class="hero-credentials" role="list" aria-label="Dan Finnerty's credentials">
+        <div class="hero-cred-row" role="listitem">
+          <span>LCSW</span>
+          Licensed Clinical Social Worker
+        </div>
+        <div class="hero-cred-row" role="listitem">
+          <span>MSW</span>
+          Master of Social Work — Florida Atlantic University
+        </div>
+        <div class="hero-cred-row" role="listitem">
+          <span>8 YRS</span>
+          Clinical practice in veteran services
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ABOUT: composed bio, institutional language -->
+  <section class="about-strip" id="about" aria-labelledby="about-heading">
+    <div class="about-inner">
+      <div>
+        <div class="about-label">About</div>
+        <div class="about-name" id="about-heading">Dan Finnerty</div>
+        <div class="about-title-line">
+          LCSW · West Palm Beach, FL<br>
+          Veteran Services · Recovery
+        </div>
+      </div>
+      <div>
+        <p class="about-body">
+          <strong>Dan Finnerty is a Licensed Clinical Social Worker</strong> with eight years of full-time clinical practice focused on substance use, trauma, and recovery in veteran and first-responder communities. He holds a Master of Social Work from Florida Atlantic University and has spent a year supporting students at Palm Beach State College. His clinical work sits at the intersection of mental health, addiction, and the specific culture of those who have served — a culture he knows not only professionally, but personally.
+        </p>
+      </div>
+    </div>
+  </section>
+
+</header>
+
+<!-- ═══════════════════════════════════
+     THE GRADIENT — the mask slipping.
+     Institutional language ends here.
+     What follows is the truth.
+═══════════════════════════════════ -->
+
+<div class="transition-strip" role="presentation" aria-hidden="false">
+  <div class="transition-text">
+    <blockquote class="transition-quote">
+      "The credentials are real. So is everything underneath them."
+    </blockquote>
+    <p class="transition-attr">— Dan Finnerty, LCSW</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     THE TRUTH — dark zone.
+     This is where Dan actually lives.
+═══════════════════════════════════ -->
+
+<div class="zone-dark">
+
+  <!-- DAN'S TRUTH — the first thing said in the dark -->
+  <section class="truth-section" aria-labelledby="truth-heading">
+    <h2 class="truth-heading" id="truth-heading">I know the darkness.</h2>
+    <p class="truth-body">
+      Abuse. Combat. Trauma. I've been hurt. I've hurt others. I've been to hell and clawed my way back out. I know the map to being human again.
+    </p>
+  </section>
+
+  <!-- TWO DOORS -->
+  <section class="doors-section" aria-labelledby="doors-heading">
+    <div class="doors-label" id="doors-heading">Where do you want to start?</div>
+    <div class="doors-grid" role="group" aria-label="Choose your path">
+
+      <a class="door door-a" href="#supporters">
+        <span class="door-num">01</span>
+        <div class="door-title">I care about<br>an addict.</div>
+        <p class="door-desc">You love someone in the grip of it. You don't know what to say or how to help without losing yourself. You're in the right place.</p>
+        <span class="door-arrow" aria-hidden="true">↗</span>
+      </a>
+
+      <a class="door door-b" href="#recovery">
+        <span class="door-num">02</span>
+        <div class="door-title">I have an<br>addiction.</div>
+        <p class="door-desc">You already know what you're dealing with. You don't need a lecture. You need someone who gets it — and has been further down than you think.</p>
+        <span class="door-arrow" aria-hidden="true">↗</span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- FORMATS -->
+  <section class="formats-section" id="formats" aria-labelledby="formats-heading">
+    <div class="formats-label" id="formats-heading">Find Recovery Dan on</div>
+    <div class="formats-grid">
+
+      <article class="format-item">
+        <span class="format-num">01</span>
+        <h3 class="format-name">YouTube</h3>
+        <p class="format-desc">Dan talks directly to veterans. No filter. No clinical remove. Just someone who has been there, talking to someone who is there now.</p>
+      </article>
+
+      <article class="format-item">
+        <span class="format-num">02</span>
+        <h3 class="format-name">The Podcast</h3>
+        <p class="format-desc">Dan and Jesse unpack what recovery actually looks like — for supporters, loved ones, and anyone who wants to understand without overstepping.</p>
+      </article>
+
+      <article class="format-item">
+        <span class="format-num">03</span>
+        <h3 class="format-name">Newsletter</h3>
+        <p class="format-desc">Weekly. Two lanes — one for veterans in recovery, one for those who love them. Real resources, real stories, no noise.</p>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- CTA — the darkest section, the most honest copy -->
+  <section class="cta-section" id="newsletter" aria-labelledby="cta-heading">
+    <div class="cta-eyebrow" aria-hidden="true">Free weekly newsletter</div>
+    <h2 class="cta-headline" id="cta-heading">Still reading?</h2>
+    <p class="cta-sub">Let me help.</p>
+
+    <form class="cta-form" onsubmit="return false;" aria-label="Newsletter signup">
+      <label for="email-v3" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;">Email address</label>
+      <input
+        class="cta-input"
+        type="email"
+        id="email-v3"
+        name="email"
+        placeholder="your@email.com"
+        autocomplete="email"
+        required
+        aria-required="true"
+      />
+      <button class="cta-btn" type="submit">I'm in</button>
+      <p class="cta-note">No spam. Unsubscribe any time.</p>
+    </form>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-name">Recovery Dan</div>
+    <div class="footer-note">For veterans &amp; the people who love them</div>
+  </footer>
+
+</div><!-- end zone-dark -->
+</main>
+
+</body>
+</html>
